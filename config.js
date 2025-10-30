@@ -16,10 +16,12 @@
 // Azure Static Web Apps will replace __API_ENDPOINT__ at build/deploy time
 const CONFIG = {
   // API endpoint for sending email notifications
-  API_ENDPOINT: "https://test-api-service-app-bhfwatgyakeghtdr.southeastasia-01.azurewebsites.net/api/notification",
+  API_ENDPOINT:
+    "https://test-api-service-app-bhfwatgyakeghtdr.southeastasia-01.azurewebsites.net/api/notification",
 
   // Health check endpoint for testing API connection
-  API_HEALTH_ENDPOINT: "https://test-api-service-app-bhfwatgyakeghtdr.southeastasia-01.azurewebsites.net/api/notification/health",
+  API_HEALTH_ENDPOINT:
+    "https://test-api-service-app-bhfwatgyakeghtdr.southeastasia-01.azurewebsites.net/api/notification/health",
 
   // Request timeout in milliseconds (30 seconds)
   TIMEOUT: 30000,
@@ -29,8 +31,8 @@ const CONFIG = {
 };
 
 // Log configuration
-console.log('✅ Configuration loaded successfully');
-console.log('API Endpoint:', CONFIG.API_ENDPOINT);
+console.log("✅ Configuration loaded successfully");
+console.log("API Endpoint:", CONFIG.API_ENDPOINT);
 
 // Make config available globally
 window.APP_CONFIG = CONFIG;
