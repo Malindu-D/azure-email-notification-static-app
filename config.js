@@ -1,45 +1,74 @@
 /**
  * Configuration file for Email Notification Static App
- *
- * IMPORTANT: Update the API endpoints below with your actual API URL
- *
- * Replace 'YOUR-API-NAME' with your actual Azure App Service name
- * Example: If your API is at https://my-notification-api.azurewebsites.net
- * then replace both instances of 'YOUR-API-NAME' with 'my-notification-api'
+ * 
+ * This file loads configuration from environment variables set in Azure Static Web Apps.
+ * Environment variables are replaced at runtime using string substitution.
+ * 
+ * To configure in Azure Portal:
+ * 1. Go to your Static Web App → Configuration → Application settings
+ * 2. Add these settings:
+ *    - API_ENDPOINT: https://your-api.azurewebsites.net/api/notification
+ *    - API_HEALTH_ENDPOINT: https://your-api.azurewebsites.net/api/notification/health
+ *    - DEBUG: false
  */
 
+// Configuration object with environment variable substitution
+// Azure Static Web Apps will replace __API_ENDPOINT__ at build/deploy time
 const CONFIG = {
   // API endpoint for sending email notifications
-  // TODO: Replace YOUR-API-NAME with your actual API app name
-  API_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification",
+  // This will be replaced by Azure Static Web Apps environment variable
+  API_ENDPOINT: "__API_ENDPOINT__",
 
   // Health check endpoint for testing API connection
-  // TODO: Replace YOUR-API-NAME with your actual API app name
-  API_HEALTH_ENDPOINT:
-    "https://YOUR-API-NAME.azurewebsites.net/api/notification/health",
+  // This will be replaced by Azure Static Web Apps environment variable
+  API_HEALTH_ENDPOINT: "__API_HEALTH_ENDPOINT__",
 
   // Request timeout in milliseconds (30 seconds)
   TIMEOUT: 30000,
 
-  // Enable debug logging (set to false in production)
-  DEBUG: false,
+  // Enable debug logging
+  // This will be replaced by Azure Static Web Apps environment variable
+  DEBUG: "__DEBUG__" === "true",
 };
 
-// Validate configuration
-if (CONFIG.API_ENDPOINT.includes("YOUR-API-NAME")) {
+// Check if environment variables were properly replaced
+const isConfigured = 
+  CONFIG.API_ENDPOINT && 
+  !CONFIG.API_ENDPOINT.includes('__') &&
+  CONFIG.API_HEALTH_ENDPOINT && 
+  !CONFIG.API_HEALTH_ENDPOINT.includes('__');
+
+if (!isConfigured) {
   console.error(`
 ========================================
-⚠️  CONFIGURATION REQUIRED
+⚠️  ENVIRONMENT VARIABLES NOT SET
 ========================================
-Please update config.js with your API endpoint!
+Configuration placeholders were not replaced!
 
-1. Open: config.js
-2. Replace 'YOUR-API-NAME' with your actual Azure App Service name
-3. Save and redeploy
+Please set these environment variables in Azure Static Web Apps:
 
-Example: https://my-notification-api.azurewebsites.net
+1. Go to Azure Portal
+2. Navigate to: Static Web Apps → Configuration → Application settings
+3. Add the following settings:
+
+   Name: API_ENDPOINT
+   Value: https://your-api-app.azurewebsites.net/api/notification
+
+   Name: API_HEALTH_ENDPOINT
+   Value: https://your-api-app.azurewebsites.net/api/notification/health
+
+   Name: DEBUG
+   Value: false
+
+4. Save and wait for redeployment
+
+Current values:
+- API_ENDPOINT: ${CONFIG.API_ENDPOINT}
+- API_HEALTH_ENDPOINT: ${CONFIG.API_HEALTH_ENDPOINT}
 ========================================
   `);
+} else {
+  console.log('✅ Configuration loaded successfully from environment variables');
 }
 
 // Log configuration in debug mode
