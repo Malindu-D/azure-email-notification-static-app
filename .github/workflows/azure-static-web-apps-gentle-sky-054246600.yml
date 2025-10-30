@@ -21,10 +21,14 @@ jobs:
           lfs: false
 
       - name: Replace environment variables in config.js
+        env:
+          API_ENDPOINT: ${{ secrets.API_ENDPOINT }}
+          API_HEALTH_ENDPOINT: ${{ secrets.API_HEALTH_ENDPOINT }}
+          DEBUG: ${{ secrets.DEBUG }}
         run: |
-          sed -i 's|__API_ENDPOINT__|${{ secrets.API_ENDPOINT }}|g' config.js
-          sed -i 's|__API_HEALTH_ENDPOINT__|${{ secrets.API_HEALTH_ENDPOINT }}|g' config.js
-          sed -i 's|__DEBUG__|${{ secrets.DEBUG }}|g' config.js
+          sed -i "s|__API_ENDPOINT__|${API_ENDPOINT}|g" config.js
+          sed -i "s|__API_HEALTH_ENDPOINT__|${API_HEALTH_ENDPOINT}|g" config.js
+          sed -i "s|__DEBUG__|${DEBUG}|g" config.js
           echo "Configuration file updated with environment variables"
           cat config.js
         shell: bash
