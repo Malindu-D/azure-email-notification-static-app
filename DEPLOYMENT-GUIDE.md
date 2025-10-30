@@ -21,6 +21,7 @@ Before deploying, update `config.js` with your actual API URL:
 2. Replace `YOUR-API-NAME` with your actual Azure App Service name
 
 **Example:**
+
 ```javascript
 // If your API is at: https://my-notification-api.azurewebsites.net
 API_ENDPOINT: "https://my-notification-api.azurewebsites.net/api/notification",
@@ -28,6 +29,7 @@ API_HEALTH_ENDPOINT: "https://my-notification-api.azurewebsites.net/api/notifica
 ```
 
 3. Commit and push changes:
+
 ```bash
 git add config.js
 git commit -m "Configure API endpoints"
@@ -43,11 +45,13 @@ git push
 1. **Go to Azure Portal**: https://portal.azure.com
 
 2. **Create Static Web App**:
+
    - Click **"Create a resource"**
    - Search for **"Static Web App"**
    - Click **"Create"**
 
 3. **Configure Basic Settings**:
+
    - **Subscription**: Choose your subscription
    - **Resource Group**: Create new or use existing (e.g., `rg-email-notification`)
    - **Name**: `email-notification-app` (or your preferred name)
@@ -56,17 +60,20 @@ git push
    - **Deployment source**: **GitHub**
 
 4. **Configure GitHub**:
+
    - **Organization**: Your GitHub username
    - **Repository**: Select your repository
    - **Branch**: `main` (or your default branch)
 
 5. **Build Configuration**:
+
    - **Build Presets**: `Custom`
    - **App location**: `/`
    - **Api location**: (leave empty)
    - **Output location**: `/`
 
 6. **Review and Create**:
+
    - Click **"Review + Create"**
    - Click **"Create"**
    - Wait 2-3 minutes for deployment
@@ -111,15 +118,18 @@ az staticwebapp show \
 ⚠️ **CRITICAL STEP**: Your API app must allow requests from your static app.
 
 1. **Copy your Static Web App URL** from Step 2
+
    - Example: `https://nice-sky-abc123.azurestaticapps.net`
 
 2. **Go to your API App Service** in Azure Portal
 
 3. **Navigate to Configuration**:
+
    - Click **"Configuration"** in the left menu
    - Click **"Application settings"** tab
 
 4. **Add/Update CORS Setting**:
+
    - Click **"+ New application setting"** (or edit existing)
    - **Name**: `Cors__AllowedOrigins__0`
    - **Value**: Your Static Web App URL (paste from step 1)
@@ -132,6 +142,7 @@ az staticwebapp show \
 
 **Multiple Origins (Optional)**:
 If you need to allow multiple origins:
+
 ```
 Cors__AllowedOrigins__0 = https://nice-sky-abc123.azurestaticapps.net
 Cors__AllowedOrigins__1 = https://your-custom-domain.com
@@ -142,10 +153,12 @@ Cors__AllowedOrigins__1 = https://your-custom-domain.com
 ## Step 4: Test Your Deployment
 
 1. **Open Your Static Web App**:
+
    - Navigate to your Static Web App URL
    - You should see the Email Notification Service page
 
 2. **Test API Connection**:
+
    - Click the **"Test Connection"** button
    - ✅ **Success**: Green message with API status
    - ❌ **Failure**: See Troubleshooting section below
@@ -166,11 +179,13 @@ Cors__AllowedOrigins__1 = https://your-custom-domain.com
 Every time you push code to GitHub, it automatically redeploys:
 
 1. **View Workflow**:
+
    - Go to your GitHub repository
    - Click **"Actions"** tab
    - See the latest workflow run
 
 2. **Check Deployment Status**:
+
    - ✅ Green checkmark = Successful deployment
    - ❌ Red X = Failed deployment (click for details)
 
@@ -187,6 +202,7 @@ Every time you push code to GitHub, it automatically redeploys:
 **Symptom**: Error message about `YOUR-API-NAME` in browser console
 
 **Solution**:
+
 1. Edit `config.js` with your actual API name
 2. Commit and push changes
 3. Wait for GitHub Actions to redeploy
@@ -196,6 +212,7 @@ Every time you push code to GitHub, it automatically redeploys:
 **Symptom**: Test Connection button shows error or browser console shows CORS error
 
 **Solutions**:
+
 1. ✅ Verify API app is running (Azure Portal → App Service → Overview)
 2. ✅ Check CORS setting in API app includes your Static Web App URL
 3. ✅ Ensure no typos in the Static Web App URL in CORS settings
@@ -207,6 +224,7 @@ Every time you push code to GitHub, it automatically redeploys:
 **Symptom**: Red X in GitHub Actions
 
 **Solutions**:
+
 1. Check the workflow logs for error details
 2. Ensure `staticwebapp.config.json` is valid JSON
 3. Verify build settings (app location: `/`, output location: `/`)
@@ -216,6 +234,7 @@ Every time you push code to GitHub, it automatically redeploys:
 **Symptom**: Test Connection succeeds, but Send Notification fails
 
 **Solutions**:
+
 1. Check your API app logs in Azure Portal
 2. Verify API has proper configuration for downstream services
 3. Ensure notification endpoint returns expected response format
@@ -225,6 +244,7 @@ Every time you push code to GitHub, it automatically redeploys:
 ## Updating Your App
 
 ### Make Changes
+
 ```bash
 # Edit files
 code config.js
@@ -238,6 +258,7 @@ git push
 ```
 
 ### Monitor Deployment
+
 1. Go to GitHub → Actions tab
 2. Watch the deployment workflow
 3. Wait for green checkmark (usually 1-2 minutes)
@@ -250,18 +271,21 @@ git push
 After deployment, verify:
 
 ### ✅ Static Web App
+
 - [ ] Deployed to Azure Static Web Apps
 - [ ] GitHub Actions workflow is set up
 - [ ] Can access the Static Web App URL
 - [ ] `config.js` has correct API endpoints (not `YOUR-API-NAME`)
 
-### ✅ API App  
+### ✅ API App
+
 - [ ] API app is running
 - [ ] CORS includes Static Web App URL
 - [ ] Can access health endpoint in browser
 - [ ] API has required downstream configuration
 
 ### ✅ Testing
+
 - [ ] "Test Connection" shows green success
 - [ ] Can send test notifications
 - [ ] No errors in browser console (F12)
@@ -271,6 +295,7 @@ After deployment, verify:
 ## Custom Domain (Optional)
 
 1. **In Azure Portal**:
+
    - Go to your Static Web App
    - Click **"Custom domains"**
    - Click **"+ Add"**
@@ -285,16 +310,19 @@ After deployment, verify:
 ## Production Recommendations
 
 ### Security
+
 - [ ] Use HTTPS only (automatic with Azure Static Web Apps)
 - [ ] Restrict CORS to specific domains (no wildcards)
 - [ ] Set `DEBUG: false` in `config.js`
 
 ### Monitoring
+
 - [ ] Enable Application Insights on API app
 - [ ] Monitor GitHub Actions for deployment failures
 - [ ] Set up Azure Monitor alerts for API app
 
 ### Performance
+
 - [ ] Use Standard tier for production workloads
 - [ ] Configure custom domain for branding
 - [ ] Enable CDN for global users (built-in with Static Web Apps)

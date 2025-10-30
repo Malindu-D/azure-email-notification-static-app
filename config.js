@@ -2,7 +2,7 @@
  * Configuration file for Email Notification Static App
  *
  * IMPORTANT: Update the API endpoints below with your actual API URL
- * 
+ *
  * Replace 'YOUR-API-NAME' with your actual Azure App Service name
  * Example: If your API is at https://my-notification-api.azurewebsites.net
  * then replace both instances of 'YOUR-API-NAME' with 'my-notification-api'
@@ -15,7 +15,8 @@ const CONFIG = {
 
   // Health check endpoint for testing API connection
   // TODO: Replace YOUR-API-NAME with your actual API app name
-  API_HEALTH_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification/health",
+  API_HEALTH_ENDPOINT:
+    "https://YOUR-API-NAME.azurewebsites.net/api/notification/health",
 
   // Request timeout in milliseconds (30 seconds)
   TIMEOUT: 30000,
@@ -25,7 +26,7 @@ const CONFIG = {
 };
 
 // Validate configuration
-if (CONFIG.API_ENDPOINT.includes('YOUR-API-NAME')) {
+if (CONFIG.API_ENDPOINT.includes("YOUR-API-NAME")) {
   console.error(`
 ========================================
 ⚠️  CONFIGURATION REQUIRED

@@ -9,11 +9,13 @@ Follow these 4 simple steps to deploy your Email Notification Static App.
 Open `config.js` and replace `YOUR-API-NAME` with your actual API app name.
 
 **Find this line:**
+
 ```javascript
 API_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification",
 ```
 
 **Replace with your API name:**
+
 ```javascript
 API_ENDPOINT: "https://my-notification-api.azurewebsites.net/api/notification",
 ```
@@ -35,6 +37,7 @@ git push
 ## Step 3: Deploy to Azure
 
 ### Using Azure Portal:
+
 1. Go to [portal.azure.com](https://portal.azure.com)
 2. Create a new **Static Web App**
 3. Connect to your **GitHub repository**
@@ -45,6 +48,7 @@ git push
 6. Copy your Static Web App URL
 
 ### Using Azure CLI:
+
 ```bash
 az staticwebapp create \
   --name email-notification-app \

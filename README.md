@@ -20,6 +20,7 @@ API_HEALTH_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification/h
 This app is configured for automatic deployment via GitHub Actions.
 
 **Option A: Using Azure Portal**
+
 1. Go to [Azure Portal](https://portal.azure.com)
 2. Create a new "Static Web App"
 3. Connect to your GitHub repository
@@ -29,6 +30,7 @@ This app is configured for automatic deployment via GitHub Actions.
 5. Azure will automatically set up GitHub Actions
 
 **Option B: Using Azure CLI**
+
 ```bash
 az staticwebapp create \
   --name email-notification-app \
@@ -78,6 +80,7 @@ az staticwebapp create \
 Your API must provide these endpoints:
 
 ### Health Check
+
 ```
 GET /api/notification/health
 
@@ -90,6 +93,7 @@ Response:
 ```
 
 ### Send Notification
+
 ```
 POST /api/notification
 Content-Type: application/json
@@ -114,10 +118,12 @@ Response:
 ## 🔧 Troubleshooting
 
 ### "Configuration Required" Error
+
 - **Cause**: `YOUR-API-NAME` not replaced in `config.js`
 - **Solution**: Edit `config.js` with your actual API name
 
 ### "Connection Failed" Error
+
 - **Cause**: Cannot reach API or CORS not configured
 - **Solutions**:
   1. Verify API is running in Azure Portal
@@ -125,10 +131,12 @@ Response:
   3. Verify API endpoints in `config.js` are correct
 
 ### CORS Error in Browser Console
+
 - **Error**: "Access to fetch... has been blocked by CORS policy"
 - **Solution**: Add your Static Web App URL to API CORS settings
 
 ### 404 Not Found
+
 - **Cause**: API endpoints incorrect
 - **Solution**: Verify your API URL and endpoint paths
 
@@ -154,6 +162,7 @@ email-notification-static-app/
 After making changes:
 
 1. Commit and push to GitHub:
+
    ```bash
    git add .
    git commit -m "Update configuration"
