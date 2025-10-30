@@ -1,9 +1,9 @@
 /**
  * Configuration file for Email Notification Static App
- * 
+ *
  * This file loads configuration from environment variables set in Azure Static Web Apps.
  * Environment variables are replaced at runtime using string substitution.
- * 
+ *
  * To configure in Azure Portal:
  * 1. Go to your Static Web App → Configuration → Application settings
  * 2. Add these settings:
@@ -32,11 +32,11 @@ const CONFIG = {
 };
 
 // Check if environment variables were properly replaced
-const isConfigured = 
-  CONFIG.API_ENDPOINT && 
-  !CONFIG.API_ENDPOINT.includes('__') &&
-  CONFIG.API_HEALTH_ENDPOINT && 
-  !CONFIG.API_HEALTH_ENDPOINT.includes('__');
+const isConfigured =
+  CONFIG.API_ENDPOINT &&
+  !CONFIG.API_ENDPOINT.includes("__") &&
+  CONFIG.API_HEALTH_ENDPOINT &&
+  !CONFIG.API_HEALTH_ENDPOINT.includes("__");
 
 if (!isConfigured) {
   console.error(`
@@ -68,7 +68,9 @@ Current values:
 ========================================
   `);
 } else {
-  console.log('✅ Configuration loaded successfully from environment variables');
+  console.log(
+    "✅ Configuration loaded successfully from environment variables"
+  );
 }
 
 // Log configuration in debug mode

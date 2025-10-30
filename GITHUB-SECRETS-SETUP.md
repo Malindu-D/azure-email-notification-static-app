@@ -14,18 +14,21 @@ This app uses GitHub Secrets to inject environment variables during deployment. 
 ### Required Secrets:
 
 #### 1. API_ENDPOINT
+
 - **Name**: `API_ENDPOINT`
 - **Value**: `https://YOUR-API-NAME.azurewebsites.net/api/notification`
 - Replace `YOUR-API-NAME` with your actual Azure App Service name
 - Example: `https://my-notification-api.azurewebsites.net/api/notification`
 
-#### 2. API_HEALTH_ENDPOINT  
+#### 2. API_HEALTH_ENDPOINT
+
 - **Name**: `API_HEALTH_ENDPOINT`
 - **Value**: `https://YOUR-API-NAME.azurewebsites.net/api/notification/health`
 - Replace `YOUR-API-NAME` with your actual Azure App Service name
 - Example: `https://my-notification-api.azurewebsites.net/api/notification/health`
 
 #### 3. DEBUG (Optional)
+
 - **Name**: `DEBUG`
 - **Value**: `false` (or `true` for debugging)
 
@@ -34,8 +37,9 @@ This app uses GitHub Secrets to inject environment variables during deployment. 
 ## Step 2: Verify Secrets Are Added
 
 After adding all secrets, you should see:
+
 - ✅ API_ENDPOINT
-- ✅ API_HEALTH_ENDPOINT  
+- ✅ API_HEALTH_ENDPOINT
 - ✅ DEBUG
 - ✅ AZURE_STATIC_WEB_APPS_API_TOKEN_GENTLE_SKY_054246600 (already exists)
 
@@ -52,6 +56,7 @@ git push
 ```
 
 Or manually trigger the workflow:
+
 1. Go to **Actions** tab
 2. Select **"Azure Static Web Apps CI/CD"**
 3. Click **"Run workflow"** → **"Run workflow"**
@@ -74,7 +79,7 @@ Or manually trigger the workflow:
 1. GitHub Actions reads secrets during build
 2. Replaces placeholders in `config.js`:
    - `__API_ENDPOINT__` → Your actual API endpoint
-   - `__API_HEALTH_ENDPOINT__` → Your actual health endpoint  
+   - `__API_HEALTH_ENDPOINT__` → Your actual health endpoint
    - `__DEBUG__` → `true` or `false`
 3. Deploys the updated files to Azure Static Web Apps
 4. Your app loads with the correct configuration
@@ -86,6 +91,7 @@ Or manually trigger the workflow:
 ### Secrets Not Working?
 
 **Check:**
+
 1. Secret names are EXACTLY: `API_ENDPOINT`, `API_HEALTH_ENDPOINT`, `DEBUG`
 2. Secret values don't have extra spaces or quotes
 3. GitHub Actions workflow completed successfully
@@ -94,11 +100,13 @@ Or manually trigger the workflow:
 ### Still Seeing Placeholders?
 
 **In browser console, if you see:**
+
 ```
 API_ENDPOINT: __API_ENDPOINT__
 ```
 
 **Then:**
+
 1. Verify secrets are added correctly in GitHub
 2. Re-run the GitHub Actions workflow
 3. Check workflow logs for errors
@@ -106,6 +114,7 @@ API_ENDPOINT: __API_ENDPOINT__
 ### CORS Errors After Configuration?
 
 **After fixing the configuration, don't forget to:**
+
 1. Get your Static Web App URL
 2. Add it to API App CORS settings:
    - Go to: API App Service → Configuration → Application settings
@@ -117,10 +126,10 @@ API_ENDPOINT: __API_ENDPOINT__
 ## Quick Checklist
 
 - [ ] Added `API_ENDPOINT` to GitHub Secrets
-- [ ] Added `API_HEALTH_ENDPOINT` to GitHub Secrets  
+- [ ] Added `API_HEALTH_ENDPOINT` to GitHub Secrets
 - [ ] Added `DEBUG` to GitHub Secrets (optional)
 - [ ] Pushed changes or re-run workflow
-- [ ] GitHub Actions completed successfully  
+- [ ] GitHub Actions completed successfully
 - [ ] Browser console shows: "Configuration loaded successfully"
 - [ ] Test Connection works
 - [ ] Added Static Web App URL to API CORS settings
