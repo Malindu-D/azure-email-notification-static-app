@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Email Notification Service - Local Testing</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>📧 Email Notification Service</h1>
+        <p class="subtitle">Send email notifications through our API</p>
+        <p style="color: orange; margin-top: 10px">🔧 LOCAL DEVELOPMENT MODE</p>
+      </header>
+
+      <!-- API Connection Test Section -->
+      <div class="test-section">
+        <h2>🔌 API Connection Test</h2>
+        <p>
+          Test the connection to the API service before sending notifications
+        </p>
+        <button id="testConnectionBtn" class="btn btn-test">
+          <span class="btn-text">Test Connection</span>
+          <span class="spinner" style="display: none">⏳</span>
+        </button>
+        <div id="testResult" class="result-box" style="display: none"></div>
+      </div>
+
+      <!-- Email Notification Form -->
+      <div class="form-section">
+        <h2>📨 Send Email Notification</h2>
+
+        <form id="notificationForm">
+          <div class="form-group">
+            <label for="recipientEmail">
+              Recipient Email Address <span class="required">*</span>
+            </label>
+            <input
+              type="email"
+              id="recipientEmail"
+              name="recipientEmail"
+              placeholder="user@example.com"
+              required
+            />
+            <small class="help-text"
+              >The email address where the notification will be sent</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="templateId">
+              Template ID <span class="optional">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="templateId"
+              name="templateId"
+              placeholder="welcome-email"
+              maxlength="50"
+            />
+            <small class="help-text"
+              >Template identifier for the email export app to use</small
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="dataId">
+              Data ID <span class="optional">(optional)</span>
+            </label>
+            <input
+              type="text"
+              id="dataId"
+              name="dataId"
+              placeholder="order-12345"
+              maxlength="100"
+            />
+            <small class="help-text"
+              >Database record ID for the email export app to fetch data</small
+            >
+          </div>
+
+          <button type="submit" id="submitBtn" class="btn btn-primary">
+            <span class="btn-text">Send Notification</span>
+            <span class="spinner" style="display: none">⏳</span>
+          </button>
+        </form>
+
+        <div id="formResult" class="result-box" style="display: none"></div>
+      </div>
+
+      <!-- Information Section -->
+      <div class="info-section">
+        <h3>ℹ️ How It Works</h3>
+        <ol>
+          <li>Enter the recipient's email address (required)</li>
+          <li>Optionally specify a template ID and data ID</li>
+          <li>Click "Send Notification" to submit the request</li>
+          <li>The API forwards your request to the email export app</li>
+          <li>
+            The email export app fetches data from the database and sends the
+            email
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- FOR LOCAL TESTING: Include config.local.js BEFORE config.js -->
+    <script src="config.local.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
