@@ -1,86 +1,49 @@
 /**
  * Configuration file for Email Notification Static App
  *
- * ⚠️ DO NOT HARDCODE API ENDPOINTS HERE!
- *
- * Set these values in Azure Static Web Apps:
- * 1. Go to Azure Portal → Your Static Web App → Configuration
- * 2. Add Application Settings:
- *    - API_ENDPOINT: https://your-api-app.azurewebsites.net/api/notification
- *    - API_HEALTH_ENDPOINT: https://your-api-app.azurewebsites.net/api/notification/health
- *    - DEBUG: false (optional)
- *
- * For local testing, create config.local.js from config.local.js.example
+ * IMPORTANT: Update the API endpoints below with your actual API URL
+ * 
+ * Replace 'YOUR-API-NAME' with your actual Azure App Service name
+ * Example: If your API is at https://my-notification-api.azurewebsites.net
+ * then replace both instances of 'YOUR-API-NAME' with 'my-notification-api'
  */
 
 const CONFIG = {
   // API endpoint for sending email notifications
-  // Set this in Azure Portal as environment variable
-  API_ENDPOINT:
-    window.ENV?.API_ENDPOINT ||
-    (() => {
-      console.error(
-        "❌ API_ENDPOINT not configured! Set it in Azure Static Web Apps → Configuration"
-      );
-      return null;
-    })(),
+  // TODO: Replace YOUR-API-NAME with your actual API app name
+  API_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification",
 
   // Health check endpoint for testing API connection
-  // Set this in Azure Portal as environment variable
-  API_HEALTH_ENDPOINT:
-    window.ENV?.API_HEALTH_ENDPOINT ||
-    (() => {
-      console.error(
-        "❌ API_HEALTH_ENDPOINT not configured! Set it in Azure Static Web Apps → Configuration"
-      );
-      return null;
-    })(),
+  // TODO: Replace YOUR-API-NAME with your actual API app name
+  API_HEALTH_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification/health",
 
   // Request timeout in milliseconds (30 seconds)
-  TIMEOUT: window.ENV?.TIMEOUT ? parseInt(window.ENV.TIMEOUT) : 30000,
+  TIMEOUT: 30000,
 
-  // Enable debug logging
-  DEBUG: window.ENV?.DEBUG === "true" || false,
+  // Enable debug logging (set to false in production)
+  DEBUG: false,
 };
 
 // Validate configuration
-if (!CONFIG.API_ENDPOINT || !CONFIG.API_HEALTH_ENDPOINT) {
+if (CONFIG.API_ENDPOINT.includes('YOUR-API-NAME')) {
   console.error(`
 ========================================
-⚠️  CONFIGURATION ERROR
+⚠️  CONFIGURATION REQUIRED
 ========================================
-API endpoints are not configured!
+Please update config.js with your API endpoint!
 
-Please set these environment variables:
+1. Open: config.js
+2. Replace 'YOUR-API-NAME' with your actual Azure App Service name
+3. Save and redeploy
 
-FOR AZURE STATIC WEB APPS (Production):
-1. Go to Azure Portal
-2. Navigate to your Static Web App
-3. Go to Configuration → Application settings
-4. Add the following settings:
-
-   Name: API_ENDPOINT
-   Value: https://your-api-app.azurewebsites.net/api/notification
-
-   Name: API_HEALTH_ENDPOINT
-   Value: https://your-api-app.azurewebsites.net/api/notification/health
-
-FOR LOCAL TESTING:
-1. Copy config.local.js.example to config.local.js
-2. Update the values in config.local.js
-3. Open index.local.html instead of index.html
-
-See LOCAL-TESTING.md for more details.
+Example: https://my-notification-api.azurewebsites.net
 ========================================
   `);
 }
 
 // Log configuration in debug mode
 if (CONFIG.DEBUG) {
-  console.log("Email Notification App Configuration:", {
-    ...CONFIG,
-    isConfigured: !!(CONFIG.API_ENDPOINT && CONFIG.API_HEALTH_ENDPOINT),
-  });
+  console.log("Email Notification App Configuration:", CONFIG);
 }
 
 // Make config available globally

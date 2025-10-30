@@ -2,182 +2,96 @@
 
 A static web application for sending email notifications through your API service.
 
-## Features
+## 🚀 Quick Start
 
-- ✅ **API Connection Test** - Test the connection to your API before sending notifications
-- ✅ **Email Notification Form** - Simple form to send email notifications
-- ✅ **Environment Variable Support** - Configure API endpoints via environment variables
-- ✅ **Responsive Design** - Works on desktop and mobile devices
-- ✅ **Real-time Feedback** - Loading states and detailed success/error messages
+### 1. Configure API Endpoints
 
----
-
-## Files Structure
-
-```
-email-notification-static-app/
-├── index.html          # Main HTML page
-├── styles.css          # Styling
-├── config.js           # Configuration (API endpoints)
-├── app.js              # Application logic
-├── README.md           # This file
-├── staticwebapp.config.json  # Azure Static Web Apps configuration
-└── .env.example        # Environment variables template
-```
-
----
-
-## Configuration
-
-### Option 1: Update config.js directly (for local testing)
-
-Edit `config.js` and update the API endpoints:
+Open `config.js` and replace `YOUR-API-NAME` with your actual Azure App Service name:
 
 ```javascript
-const CONFIG = {
-  API_ENDPOINT: "https://your-api-app.azurewebsites.net/api/notification",
-  API_HEALTH_ENDPOINT:
-    "https://your-api-app.azurewebsites.net/api/notification/health",
-};
+API_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification",
+API_HEALTH_ENDPOINT: "https://YOUR-API-NAME.azurewebsites.net/api/notification/health",
 ```
 
-### Option 2: Use Environment Variables (for Azure Static Web Apps)
+**Example:** If your API is at `https://my-notification-api.azurewebsites.net`, replace `YOUR-API-NAME` with `my-notification-api`.
 
-1. Deploy to Azure Static Web Apps
-2. Go to Azure Portal → Your Static Web App → Configuration
-3. Add Application Settings:
+### 2. Deploy to Azure Static Web Apps
 
-| Name                  | Value                                                                    |
-| --------------------- | ------------------------------------------------------------------------ |
-| `API_ENDPOINT`        | `https://test-api-service-app.azurewebsites.net/api/notification`        |
-| `API_HEALTH_ENDPOINT` | `https://test-api-service-app.azurewebsites.net/api/notification/health` |
+This app is configured for automatic deployment via GitHub Actions.
 
-These will be injected as `window.ENV` at runtime.
+**Option A: Using Azure Portal**
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Create a new "Static Web App"
+3. Connect to your GitHub repository
+4. Set build configuration:
+   - **App location**: `/`
+   - **Output location**: `/`
+5. Azure will automatically set up GitHub Actions
 
----
-
-## Local Development
-
-1. **Update configuration**:
-
-   - Edit `config.js` with your API endpoint
-
-2. **Serve the files**:
-
-   ```bash
-   # Using Python
-   python -m http.server 8000
-
-   # Using Node.js
-   npx serve .
-
-   # Using VS Code Live Server extension
-   # Right-click index.html → Open with Live Server
-   ```
-
-3. **Open in browser**:
-
-   - Navigate to `http://localhost:8000`
-
-4. **Test the connection**:
-   - Click "Test Connection" button to verify API is accessible
-
----
-
-## Deploy to Azure Static Web Apps
-
-### Method 1: Using Azure Portal
-
-1. **Create Static Web App**:
-
-   - Go to Azure Portal
-   - Create a new Static Web App
-   - Choose GitHub repository or upload files
-
-2. **Configure Environment Variables**:
-
-   - Go to Configuration → Application Settings
-   - Add `API_ENDPOINT` and `API_HEALTH_ENDPOINT`
-
-3. **Configure CORS on API App**:
-   - Go to your API App Service
-   - Configuration → Application Settings
-   - Update `Cors__AllowedOrigins__0` with your static app URL
-   - Example: `https://your-static-app.azurestaticapps.net`
-
-### Method 2: Using Azure CLI
-
+**Option B: Using Azure CLI**
 ```bash
-# Create resource group
-az group create --name rg-email-notification --location eastus
-
-# Create static web app
 az staticwebapp create \
   --name email-notification-app \
-  --resource-group rg-email-notification \
+  --resource-group YOUR-RESOURCE-GROUP \
   --source . \
   --location eastus \
   --branch main \
   --app-location "/" \
   --output-location "/"
-
-# Add environment variables
-az staticwebapp appsettings set \
-  --name email-notification-app \
-  --resource-group rg-email-notification \
-  --setting-names API_ENDPOINT="https://test-api-service-app.azurewebsites.net/api/notification" \
-                  API_HEALTH_ENDPOINT="https://test-api-service-app.azurewebsites.net/api/notification/health"
 ```
+
+### 3. Configure CORS on API App
+
+⚠️ **CRITICAL**: Your API must allow requests from your static app URL.
+
+1. Get your Static Web App URL (e.g., `https://nice-sky-123.azurestaticapps.net`)
+2. Go to your API App Service in Azure Portal
+3. Navigate to **Configuration → Application Settings**
+4. Add or update:
+   ```
+   Name:  Cors__AllowedOrigins__0
+   Value: https://your-static-app-url.azurestaticapps.net
+   ```
+5. Save and restart the API app
+
+### 4. Test Your Deployment
+
+1. Open your Static Web App URL
+2. Click **"Test Connection"** button
+3. If successful (green message), try sending a test notification
+4. Fill in the form and click **"Send Notification"**
 
 ---
 
-## Using the Application
+## ✨ Features
 
-### 1. Test API Connection
-
-Before sending notifications, test the connection:
-
-- Click the **"Test Connection"** button
-- If successful, you'll see a green success message with API details
-- If it fails, check the troubleshooting tips in the error message
-
-### 2. Send Email Notification
-
-Fill in the form:
-
-- **Recipient Email** (required): Email address to send notification to
-- **Template ID** (optional): Template identifier for your email export app
-- **Data ID** (optional): Database record ID for email export app
-
-Click **"Send Notification"** to submit.
+- ✅ Test API connection before sending notifications
+- ✅ Simple email notification form
+- ✅ Real-time feedback with loading states
+- ✅ Detailed success/error messages
+- ✅ Responsive design for desktop and mobile
 
 ---
 
-## API Integration
+## 📋 API Requirements
 
-This app connects to your API service with these endpoints:
+Your API must provide these endpoints:
 
-### Health Check Endpoint
-
+### Health Check
 ```
-GET https://your-api-app.azurewebsites.net/api/notification/health
-```
+GET /api/notification/health
 
-Expected response:
-
-```json
+Response:
 {
   "status": "Healthy",
   "service": "NotificationApi",
-  "connectionType": "Direct HTTP to Email Export App",
   "timestamp": "2025-10-30T10:00:00Z"
 }
 ```
 
-### Notification Endpoint
-
+### Send Notification
 ```
-POST https://your-api-app.azurewebsites.net/api/notification
+POST /api/notification
 Content-Type: application/json
 
 {
@@ -185,116 +99,104 @@ Content-Type: application/json
   "templateId": "welcome-email",
   "dataId": "order-12345"
 }
-```
 
-Expected response:
-
-```json
+Response:
 {
   "success": true,
-  "message": "Email notification sent to email export app successfully",
-  "correlationId": "guid-here",
-  "receivedAt": "2025-10-30T10:00:00Z",
-  "status": "Forwarded",
+  "message": "Email notification sent successfully",
   "recipient": "user@example.com",
-  "templateId": "welcome-email",
-  "dataId": "order-12345"
+  "status": "Forwarded"
 }
 ```
 
 ---
 
-## CORS Configuration
+## 🔧 Troubleshooting
 
-⚠️ **Important**: Your API app must allow requests from your static web app domain.
+### "Configuration Required" Error
+- **Cause**: `YOUR-API-NAME` not replaced in `config.js`
+- **Solution**: Edit `config.js` with your actual API name
 
-### Update API App CORS Settings
+### "Connection Failed" Error
+- **Cause**: Cannot reach API or CORS not configured
+- **Solutions**:
+  1. Verify API is running in Azure Portal
+  2. Check CORS settings (see step 3 above)
+  3. Verify API endpoints in `config.js` are correct
 
-**In Azure Portal**:
+### CORS Error in Browser Console
+- **Error**: "Access to fetch... has been blocked by CORS policy"
+- **Solution**: Add your Static Web App URL to API CORS settings
 
-1. Go to your API App Service
-2. Configuration → Application Settings
-3. Add/Update:
-   ```
-   Cors__AllowedOrigins__0 = https://your-static-app.azurestaticapps.net
-   ```
+### 404 Not Found
+- **Cause**: API endpoints incorrect
+- **Solution**: Verify your API URL and endpoint paths
 
-**In appsettings.json**:
+---
 
-```json
-{
-  "Cors": {
-    "AllowedOrigins": [
-      "https://your-static-app.azurestaticapps.net",
-      "http://localhost:8000"
-    ]
-  }
-}
+## 📁 Files Structure
+
+```
+email-notification-static-app/
+├── index.html                  # Main HTML page
+├── styles.css                  # Styling
+├── config.js                   # API configuration (UPDATE THIS!)
+├── app.js                      # Application logic
+├── staticwebapp.config.json    # Azure Static Web Apps config
+├── DEPLOYMENT-GUIDE.md         # Detailed deployment guide
+└── README.md                   # This file
 ```
 
 ---
 
-## Troubleshooting
+## 🔄 Updating the App
 
-### Connection Test Fails
+After making changes:
 
-**Error**: "Cannot reach API - Check if the API is running and CORS is configured"
+1. Commit and push to GitHub:
+   ```bash
+   git add .
+   git commit -m "Update configuration"
+   git push
+   ```
 
-**Solutions**:
-
-1. Verify `API_HEALTH_ENDPOINT` in `config.js` is correct
-2. Check if API app is running in Azure Portal
-3. Verify CORS is configured (see CORS Configuration above)
-4. Check browser console for detailed error messages
-
-### Send Notification Fails
-
-**Error**: "Failed to fetch"
-
-**Solutions**:
-
-1. Test connection first using "Test Connection" button
-2. Verify `API_ENDPOINT` in `config.js` is correct
-3. Check CORS configuration
-4. Verify your API app has `EmailExportApp__Url` configured
+2. GitHub Actions will automatically redeploy
+3. Check the "Actions" tab in GitHub to monitor deployment
 
 ---
 
-## Environment Variables Reference
+## 📚 Additional Documentation
 
-| Variable              | Description                     | Example                                                                  |
-| --------------------- | ------------------------------- | ------------------------------------------------------------------------ |
-| `API_ENDPOINT`        | Email notification API endpoint | `https://test-api-service-app.azurewebsites.net/api/notification`        |
-| `API_HEALTH_ENDPOINT` | Health check endpoint           | `https://test-api-service-app.azurewebsites.net/api/notification/health` |
-| `DEBUG`               | Enable debug logging            | `true` or `false`                                                        |
+- **DEPLOYMENT-GUIDE.md** - Detailed step-by-step deployment instructions
+- See inline comments in `config.js` for configuration options
 
 ---
 
-## Testing Checklist
+## ✅ Pre-Deployment Checklist
 
-- [ ] Update `config.js` with correct API endpoints
-- [ ] Test locally using `http.server` or similar
-- [ ] Click "Test Connection" - should show green success
-- [ ] Fill form and send test notification
-- [ ] Deploy to Azure Static Web Apps
-- [ ] Add environment variables in Azure Portal
-- [ ] Update CORS settings on API app
-- [ ] Test from deployed static app
-- [ ] Verify email is received (if email export app is configured)
-
----
-
-## Support
-
-For issues with:
-
-- **This static app**: Check browser console for errors
-- **API connectivity**: Use "Test Connection" button
-- **Email delivery**: Check your email export app logs
-- **CORS errors**: Update API app CORS configuration
+- [ ] Updated `config.js` with actual API name
+- [ ] Committed changes to GitHub
+- [ ] Created Azure Static Web App
+- [ ] GitHub Actions workflow is running
+- [ ] Noted the Static Web App URL
+- [ ] Updated CORS on API app with Static Web App URL
+- [ ] Tested connection using "Test Connection" button
+- [ ] Successfully sent a test notification
 
 ---
 
-## License
+## 🆘 Support
 
-This is part of the Email Notification API Service project.
+**Configuration Issues**: Check browser console (F12) for detailed error messages
+
+**API Issues**: Verify your API app is running and accessible at the configured URL
+
+**CORS Issues**: Ensure Static Web App URL is added to API CORS settings
+
+**Deployment Issues**: Check GitHub Actions logs for build/deployment errors
+
+---
+
+## 📄 License
+
+Part of the Email Notification API Service project.
